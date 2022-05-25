@@ -8,7 +8,6 @@ public class GameField : MonoBehaviour
     [SerializeField] private GameObject treatPrefab;
     [SerializeField] float interval = 2; // Create a treat every x seconds
     
-
     void Start()
     {
         if(treatPrefab == null)

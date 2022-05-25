@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Head : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    [SerializeField] private GameObject trailingBody;
+    [SerializeField] private GameObject[] bodyParts;
+    private GameObject head;
     private Vector3 direction = Vector3.up;
 
     void Start()
     {
+        head = bodyParts[0];
         StartCoroutine(Move());
+
     }
 
-    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -33,18 +35,22 @@ public class Head : MonoBehaviour
         }
     }
 
-    // Move one step at a time until game is over and trigger movement of the trailing body
+    // Move one step at a time until game is over
     IEnumerator Move()
     {
-        Vector3 oldPosition; 
-
         while (!GameManager.Instance.gameOver)
         {
-            oldPosition = transform.position;
-            transform.position = transform.position+direction*GameManager.Instance.gridSize;
-            trailingBody.GetComponent<Body>().Move(oldPosition);
+            
+            for (int i = bodyParts.Length - 1; i >= 1; i--)
+            {
+                
+                bodyParts[i].transform.position = bodyParts[i-1].transform.position;
+                
+            }
 
-            yield return new WaitForSeconds(0.5f);
+            head.transform.position = head.transform.position + direction * GameManager.Instance.gridSize;
+
+            yield return new WaitForSeconds(1.5f);
         }
     }
 }

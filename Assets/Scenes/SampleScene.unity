@@ -300,6 +300,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 341797509}
+  - component: {fileID: 341797510}
   m_Layer: 0
   m_Name: SnakePlayer
   m_TagString: Untagged
@@ -315,7 +316,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341797508}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -325,6 +326,22 @@ Transform:
   m_Father: {fileID: 789329321}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &341797510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341797508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa1ca259bc149674a932027bdb355354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyParts:
+  - {fileID: 583420123}
+  - {fileID: 2046314197}
+  - {fileID: 1512875162}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,19 +493,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4266631690699150826, guid: 614e871dafe15184eb0981e3409c568d, type: 3}
   m_PrefabInstance: {fileID: 583420121}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &583420124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583420123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2e21bc97b8f3db438a26c1a91f6219f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailingBody: {fileID: 2046314197}
 --- !u!1 &789329319
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +613,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
   m_FlipX: 0
@@ -873,7 +877,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 1f3b480a22087154c919d737d822b1da, type: 3}
 --- !u!4 &1512875161 stripped
 Transform:
@@ -996,10 +1001,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Body_0
       objectReference: {fileID: 0}
-    - target: {fileID: 2327855352541790174, guid: 1f3b480a22087154c919d737d822b1da, type: 3}
-      propertyPath: trailingBody
-      value: 
-      objectReference: {fileID: 1512875162}
     - target: {fileID: 3361157974375662439, guid: 1f3b480a22087154c919d737d822b1da, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1044,7 +1045,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 1f3b480a22087154c919d737d822b1da, type: 3}
 --- !u!4 &2046314196 stripped
 Transform:
