@@ -7,7 +7,7 @@ public class GameField : MonoBehaviour
 
     [SerializeField] private GameObject treatPrefab;
     [SerializeField] float interval = 2; // Create a treat every x seconds
-    private bool gameOver = false;
+    
 
     void Start()
     {
@@ -17,27 +17,37 @@ public class GameField : MonoBehaviour
         }
         else
         {
-            StartCoroutine(treatCreation(interval));
+            StartCoroutine(TreatCreation(interval));
         }
 
     }
 
-    void Update()
+    IEnumerator TreatCreation(float interval)
     {
-        
-    }
-
-    IEnumerator treatCreation(float interval)
-    {
-        
-
-        while (!gameOver)
+        while (!GameManager.Instance.gameOver)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-4.5f, 4.5f), 0);
+            float randomX = TrimToGridSize(Random.Range(-2.5f, 2.5f));
+            float randomY = TrimToGridSize(Random.Range(-4.5f, 4.5f));
+
+
+            Vector3 randomPosition = new Vector3(randomX, randomY, 0);
 
             Instantiate(treatPrefab, randomPosition, Quaternion.identity);
             yield return new WaitForSeconds(interval);
 
         }
+    }
+
+    //Take a float value and trim it to make it dividable trough the grid size
+    //Example: Random value is 3.141572 => Result for gridSize = 0.2f : 3.2f
+    //         Random value is 3.041572 => Result for gridSize = 0.2f : 3.0f
+    //         Values between 3.0f and 3.2f are eliminated with this method
+    private float TrimToGridSize(float f)
+    {
+        f /= GameManager.Instance.gridSize;
+        f = Mathf.RoundToInt(f);
+        f *= GameManager.Instance.gridSize;
+
+        return f;
     }
 }
