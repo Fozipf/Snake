@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private GameObject[] bodyParts;
+    [SerializeField] private List<GameObject> bodyParts;
+    [SerializeField] private GameObject bodyPrefab;
     private GameObject head;
     private Vector3 direction = Vector3.up;
+    private bool eat = false;
 
     void Start()
     {
@@ -40,8 +42,17 @@ public class Player : MonoBehaviour
     {
         while (!GameManager.Instance.gameOver)
         {
+            if (eat == true)
+            {
+                var tail = bodyParts[bodyParts.Count - 1];
+                GameObject newTail = Instantiate(bodyPrefab, tail.transform.position, Quaternion.identity);
+                newTail.name = "Body_" + (bodyParts.Count-1);
+                newTail.transform.SetParent(transform);
+                bodyParts.Add(newTail);
+                eat = false;
+            }
             
-            for (int i = bodyParts.Length - 1; i >= 1; i--)
+            for (int i = bodyParts.Count - 1; i >= 1; i--)
             {
                 
                 bodyParts[i].transform.position = bodyParts[i-1].transform.position;
@@ -50,7 +61,12 @@ public class Player : MonoBehaviour
 
             head.transform.position = head.transform.position + direction * GameManager.Instance.gridSize;
 
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.4f);
         }
+    }
+
+    public void EatSomething()
+    {
+        eat = true;
     }
 }

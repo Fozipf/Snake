@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameField : MonoBehaviour
+public class GameBoard : MonoBehaviour
 {
 
     [SerializeField] private GameObject treatPrefab;
