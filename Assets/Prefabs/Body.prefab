@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9210789013674295786}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Body
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,5 +131,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.64, y: 0.85}
+  m_Size: {x: 0.58, y: 0.77}
   m_EdgeRadius: 0

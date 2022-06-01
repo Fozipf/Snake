@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private List<GameObject> bodyParts;
     [SerializeField] private GameObject bodyPrefab;
     private GameObject head;
-    private Vector3 oldDirection = Vector3.up; 
+    private Vector3 oldDirection = Vector3.up;
     private Vector3 direction = Vector3.up;
     private bool eat = false;
     private bool directionChanged = false;
@@ -27,10 +27,15 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        
+        if (GameManager.Instance.gameOver)
+        {
+            UIManager.Instance.OnGameOver();
+            return;
+        }
+
         if (Time.time > nextActionTime)
         {
-            nextActionTime += intervalMillis/1000.0f;
+            nextActionTime += intervalMillis / 1000.0f;
             Move();
             oldDirection = direction;
         }
@@ -57,51 +62,61 @@ public class Player : MonoBehaviour
         }
     }
 
-    
+
     /**
      * Move one step at a time until game is over
      */
     void Move()
-    {       
+    {
+        GameObject tail = bodyParts[bodyParts.Count - 1];
 
         if (eat == true)
-            {
-                var tail = bodyParts[bodyParts.Count - 1];
-                GameObject newTail = Instantiate(bodyPrefab, tail.transform.position, tail.transform.rotation);
-                newTail.name = "Body_" + (bodyParts.Count-1);
-                newTail.transform.SetParent(transform);
-                bodyParts.Add(newTail);
-                eat = false;
-            }
+        {
             
-            for (int i = bodyParts.Count - 1; i >= 1; i--)
-            {
-                bodyParts[i].transform.position = bodyParts[i-1].transform.position;
-                bodyParts[i].transform.rotation = bodyParts[i - 1].transform.rotation;
-            }
+            GameObject newTail = Instantiate(bodyPrefab, tail.transform.position, tail.transform.rotation);
+            newTail.name = "Body_" + (bodyParts.Count - 1);
+            newTail.transform.SetParent(transform);
+            bodyParts.Add(newTail);
+            eat = false;
+        }
 
-            float width = sprite.rect.width/100.0f * head.transform.localScale.x;
-            float height = sprite.rect.height/100.0f * head.transform.localScale.y;
 
-            if (directionChanged)
+        float width = sprite.rect.width / 100.0f * head.transform.localScale.x;
+        float height = sprite.rect.height / 100.0f * head.transform.localScale.y;
+        Vector3 bufferPos = new Vector3(head.transform.position.x, head.transform.position.y, head.transform.position.z);
+        Quaternion bufferRot = Quaternion.Euler(head.transform.localRotation.eulerAngles.x, head.transform.localRotation.eulerAngles.y, head.transform.localRotation.eulerAngles.z);
+        
+        if (directionChanged)
+        {
+            if (direction.x != 0)
             {
-                if(direction.x != 0)
-                {
-                    head.transform.position = head.transform.position + new Vector3(direction.x * (height / 2.0f + width / 2.0f), oldDirection.y*(height / 2.0f - width / 2.0f), 0);
-                    head.transform.rotation = Quaternion.Euler(0, 0, 90);
-                }
-                else if (direction.y != 0)
-                {
-                    head.transform.position = head.transform.position + new Vector3(oldDirection.x * (height / 2.0f - width / 2.0f), direction.y * (height / 2.0f + width / 2.0f), 0);
-                    head.transform.rotation = Quaternion.identity;
-                }
+                head.transform.position = head.transform.position + new Vector3(direction.x * (height / 2.0f + width / 2.0f), oldDirection.y * (height / 2.0f - width / 2.0f), 0);
+                head.transform.rotation = Quaternion.Euler(0, 0, 90);
             }
-            else
+            else if (direction.y != 0)
             {
-                 head.transform.position = head.transform.position + direction * 0.34f;
+                head.transform.position = head.transform.position + new Vector3(oldDirection.x * (height / 2.0f - width / 2.0f), direction.y * (height / 2.0f + width / 2.0f), 0);
+                head.transform.rotation = Quaternion.identity;
             }
+        }
+        else
+        {
+            head.transform.position = head.transform.position + direction * 0.34f;
+        }
 
-            directionChanged = false;
+        for (int i = 1; i < bodyParts.Count; i++)
+        {
+            Vector3 bufferPos2 = new Vector3(bodyParts[i].transform.position.x, bodyParts[i].transform.position.y, bodyParts[i].transform.position.z);
+            Quaternion bufferRot2 = Quaternion.Euler(bodyParts[i].transform.localRotation.eulerAngles.x, bodyParts[i].transform.localRotation.eulerAngles.y, bodyParts[i].transform.localRotation.eulerAngles.z);
+
+            bodyParts[i].transform.position = bufferPos;
+            bodyParts[i].transform.rotation = bufferRot;
+
+            bufferPos = bufferPos2;
+            bufferRot = bufferRot2;
+        }
+
+        directionChanged = false;
     }
 
     /**

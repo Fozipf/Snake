@@ -20,6 +20,10 @@ public class Head : MonoBehaviour
             
             //Place treat on another position (Not destroyed, but reused)
             collider.gameObject.GetComponent<Treat>().MovePosition();
+        }else if (collider.gameObject.tag.Equals("Body"))
+        {
+            GameManager.Instance.gameOver = true;
+            Debug.Log("pos: " + collider.gameObject.transform.position);
         }
 
     }
