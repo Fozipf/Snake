@@ -4,30 +4,22 @@ using UnityEngine;
 
 public class Head : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         Debug.Log("Collided");
 
+        // When player collides with a treat
         if (collider.gameObject.tag.Equals("Treat"))
         {
             Debug.Log("Collided with Treat");
 
+            //Consume the treat and make the snake longer
             Player player = GetComponentInParent<Player>();
             player.EatSomething();
             
-            Destroy(collider.gameObject);
+            //Place treat on another position (Not destroyed, but reused)
+            collider.gameObject.GetComponent<Treat>().MovePosition();
         }
 
     }
