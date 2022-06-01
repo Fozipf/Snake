@@ -80,8 +80,8 @@ public class Player : MonoBehaviour
                 bodyParts[i].transform.rotation = bodyParts[i - 1].transform.rotation;
             }
 
-            float width = sprite.rect.width/100.0f * transform.localScale.x;
-            float height = sprite.rect.height/100.0f * transform.localScale.y;
+            float width = sprite.rect.width/100.0f * head.transform.localScale.x;
+            float height = sprite.rect.height/100.0f * head.transform.localScale.y;
 
             if (directionChanged)
             {
