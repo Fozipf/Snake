@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public float gridSize = 0.2f;
     public bool gameOver = false;
+    public int score;
 
 
     private void Awake()

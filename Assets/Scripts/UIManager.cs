@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     [SerializeField] private Text gameOverText;
+    [SerializeField] private Text scoreText;
 
     private void Awake()
     {
@@ -26,5 +27,7 @@ public class UIManager : MonoBehaviour
     public void OnGameOver()
     {
         gameOverText.gameObject.SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        scoreText.text = "Score: " + GameManager.Instance.score;
     }
 }

@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     private int intervalMillis = 500;
     private float nextActionTime = 0.0f;
     private Sprite sprite;
-    public int score;
+    
 
 
     void Start()
@@ -125,6 +125,6 @@ public class Player : MonoBehaviour
     public void EatSomething()
     {
         eat = true;
-        score++;
+        GameManager.Instance.score++;
     }
 }
