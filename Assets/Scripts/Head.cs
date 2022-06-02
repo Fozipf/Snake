@@ -23,7 +23,13 @@ public class Head : MonoBehaviour
         }else if (collider.gameObject.tag.Equals("Body"))
         {
             GameManager.Instance.gameOver = true;
-            Debug.Log("pos: " + collider.gameObject.transform.position);
+            Debug.Log("GameObject: "+collider.gameObject.name+"   pos: " + collider.gameObject.transform.position);
+            Debug.Break();
+        }else if (collider.gameObject.tag.Equals("Wall"))
+        {
+            GameManager.Instance.gameOver = true;
+            Debug.Log("GameObject: " + collider.gameObject.name + "   pos: " + collider.gameObject.transform.position);
+            Debug.Break();
         }
 
     }

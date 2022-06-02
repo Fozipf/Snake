@@ -40,22 +40,22 @@ public class Player : MonoBehaviour
             oldDirection = direction;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && !direction.Equals(Vector3.left) && !direction.Equals(Vector3.right))
         {
             direction = Vector3.left;
             directionChanged = true;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) && !direction.Equals(Vector3.right) && !direction.Equals(Vector3.left))
         {
             direction = Vector3.right;
             directionChanged = true;
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !direction.Equals(Vector3.up) && !direction.Equals(Vector3.down))
         {
             direction = Vector3.up;
             directionChanged = true;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) && !direction.Equals(Vector3.down) && !direction.Equals(Vector3.up))
         {
             direction = Vector3.down;
             directionChanged = true;
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            head.transform.position = head.transform.position + direction * 0.34f;
+            head.transform.position = head.transform.position + direction * height;
         }
 
         for (int i = 1; i < bodyParts.Count; i++)
