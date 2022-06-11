@@ -4,13 +4,57 @@ using UnityEngine;
 
 public class Treat : MonoBehaviour
 {
+    float minX = float.MaxValue;
+    float maxX = float.MinValue;
+    float minY = float.MaxValue;
+    float maxY = float.MinValue;
+
+    private void Start()
+    {
+       
+        //Get colliders from the gameboard walls and get their min and max positions
+        var colliders = GameBoard.Instance.boundaries.GetComponentsInChildren<BoxCollider2D>();
+        foreach(var collider in colliders)
+        {
+            if(collider.bounds.center.x < minX)
+            {
+                minX = collider.bounds.center.x;
+            }
+            if (collider.bounds.center.x > maxX)
+            {
+                maxX = collider.bounds.center.x;
+            }
+            if (collider.bounds.center.y < minY)
+            {
+                minY = collider.bounds.center.y;
+            }
+            if (collider.bounds.center.y > maxY)
+            {
+                maxY = collider.bounds.center.y;
+            }
+        }
+
+        //Adjust min/max values so that the treat has a space to the wall
+        minX += GameManager.Instance.gridSize;
+        maxX -= GameManager.Instance.gridSize;
+        minY += GameManager.Instance.gridSize;
+        maxY -= GameManager.Instance.gridSize;
+
+        Debug.Log("minX: " + minX);
+        Debug.Log("maxX: " + maxX);
+        Debug.Log("minY: " + minY);
+        Debug.Log("maxY: " + maxY);
+
+        MovePosition();
+    }
+
     /**
      * Move to a random position within the game boundaries
     */
     public void MovePosition()
     {
-        float randomX = TrimToGridSize(Random.Range(-2.1f, 2.1f));
-        float randomY = TrimToGridSize(Random.Range(-4.5f, 4.5f));
+        float randomX = TrimToGridSize(Random.Range(minX, maxX));
+        float randomY = TrimToGridSize(Random.Range(minY, maxY));
 
         Vector3 randomPosition = new Vector3(randomX, randomY, 0);
 
