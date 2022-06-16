@@ -7,6 +7,9 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    //Panels
+    [SerializeField] private GameObject gameOverPanel;
+
     [SerializeField] private Text gameOverText;
     [SerializeField] private Text scoreText;
 
@@ -26,8 +29,7 @@ public class UIManager : MonoBehaviour
 
     public void OnGameOver()
     {
-        gameOverText.gameObject.SetActive(true);
-        scoreText.gameObject.SetActive(true);
+        gameOverPanel.SetActive(true);
         scoreText.text = "Score: " + GameManager.Instance.score;
     }
 }
