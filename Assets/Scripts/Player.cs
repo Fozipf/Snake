@@ -15,8 +15,14 @@ public class Player : MonoBehaviour
     private int intervalMillis = 500;
     private float nextActionTime = 0.0f;
     private Sprite sprite;
-    
 
+    //Touch input detection start
+    private Vector2 fingerDown;
+    private Vector2 fingerUp;
+    public bool detectSwipeOnlyAfterRelease = false;
+
+    public float SWIPE_THRESHOLD = 20f;
+    //Touch input detection end
 
     void Start()
     {
@@ -40,6 +46,8 @@ public class Player : MonoBehaviour
             oldDirection = direction;
         }
 
+
+        //PC Input
         if (Input.GetKeyDown(KeyCode.LeftArrow) && !direction.Equals(Vector3.left) && !direction.Equals(Vector3.right))
         {
             direction = Vector3.left;
@@ -60,8 +68,104 @@ public class Player : MonoBehaviour
             direction = Vector3.down;
             directionChanged = true;
         }
+
+        //Phone Input
+        foreach(Touch touch in Input.touches)
+        {
+            if(touch.phase == TouchPhase.Began)
+            {
+                fingerUp = touch.position;
+                fingerDown = touch.position;
+            }
+
+            //Detects Swipe while finger is still moving
+            if (touch.phase == TouchPhase.Moved)
+            {
+                if (!detectSwipeOnlyAfterRelease)
+                {
+                    fingerDown = touch.position;
+                    checkSwipe();
+                }
+            }
+
+            //Detects swipe after finger is released
+            if (touch.phase == TouchPhase.Ended)
+            {
+                fingerDown = touch.position;
+                checkSwipe();
+            }
+
+            
+
+
+        }
     }
 
+
+    void checkSwipe()
+    {
+        //Check if Vertical swipe
+        if (verticalMove() > SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
+        {
+            //don't accept input if movement direction is already vertical
+            if (direction.Equals(Vector3.up) || direction.Equals(Vector3.down))
+            {
+                return;
+            }
+
+            //Debug.Log("Vertical");
+            if (fingerDown.y - fingerUp.y > 0)//up swipe
+            {
+                direction = Vector3.up;
+                directionChanged = true;
+            }
+            else if (fingerDown.y - fingerUp.y < 0)//Down swipe
+            {
+                direction = Vector3.down;
+                directionChanged = true;
+            }
+            fingerUp = fingerDown;
+        }
+
+        //Check if Horizontal swipe
+        else if (horizontalValMove() > SWIPE_THRESHOLD && horizontalValMove() > verticalMove())
+        {
+            //don't accept input if movement direction is already horizontal
+            if (direction.Equals(Vector3.left) || direction.Equals(Vector3.right))
+            {
+                return;
+            }
+
+            //Debug.Log("Horizontal");
+            if (fingerDown.x - fingerUp.x > 0)//Right swipe
+            {
+                direction = Vector3.right;
+                directionChanged = true;
+            }
+            else if (fingerDown.x - fingerUp.x < 0)//Left swipe
+            {
+                direction = Vector3.left;
+                directionChanged = true;
+            }
+            fingerUp = fingerDown;
+        }
+
+        //No Movement at-all
+        else
+        {
+            //Debug.Log("No Swipe!");
+        }
+    }
+
+    float verticalMove()
+    {
+        return Mathf.Abs(fingerDown.y - fingerUp.y);
+    }
+
+    float horizontalValMove()
+    {
+        return Mathf.Abs(fingerDown.x - fingerUp.x);
+    }
 
     /**
      * Move one step at a time until game is over
